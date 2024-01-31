@@ -1,2 +1,2 @@
-# notion_docsbot_integration_sample
+# About
 Notion DBとDocsBotのAPI連携サンプルプロジェクト
