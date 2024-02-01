@@ -8,9 +8,7 @@ Notion DB と DocsBot の API 連携サンプルプロジェクト（DocsBot 連
 
 ## How to use
 
-- `npm install`
-
-  - 依存関係をインストール
+- `npm install` で依存関係をインストール
 
 - /config/config.json に以下を記載
 
@@ -18,7 +16,7 @@ Notion DB と DocsBot の API 連携サンプルプロジェクト（DocsBot 連
   - `notion.targetDBId`: データ更新先 DB の ID
   - `notion.apiToken`: Notion API のトークン
 
-- `npx ts-node src/index.ts`
+- `npx ts-node src/index.ts` でプログラム実行
 
   - データ取得元 DB からデータを取得し、データ更新先 DB に取得データのレコードを追加
   - クエリ条件は src/notion/api.ts にハードコード（暫定）
