@@ -14,13 +14,10 @@ const unsetIdRecursively = (obj: unknown): unknown => {
     return obj.map(unsetIdRecursively);
   }
 
-  return Object.entries(obj).reduce(
-    (acc, [key, value]) => ({
-      ...acc,
-      [key]: key === 'id' ? undefined : unsetIdRecursively(value),
-    }),
-    {}
-  );
+  return Object.entries(obj).reduce<Record<string, any>>((acc, [key, val]) => {
+    const valueWithoutId = key === 'id' ? undefined : unsetIdRecursively(val);
+    return { ...acc, [key]: valueWithoutId };
+  }, {});
 };
 
 /** クエリ結果をもとにDB追加データを作る */
