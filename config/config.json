@@ -1,0 +1,11 @@
+{
+  "notion": {
+    "sourceDBId": "",
+    "targetDBId": "",
+    "apiToken": ""
+  },
+
+  "docsbot": {
+    "apiToken": ""
+  }
+}

@@ -1,21 +1,41 @@
-import { Client } from '@notionhq/client';
 import {
   QueryDatabaseParameters,
-  UpdateDatabaseParameters,
+  CreatePageParameters,
 } from '@notionhq/client/build/src/api-endpoints';
+import { Client } from '@notionhq/client';
 
-export const queryNotionDB = async (params: QueryDatabaseParameters) => {
-  const notion = new Client({ auth: process.env.NOTION_TOKEN });
+export const queryDB = async (client: Client, databaseId: string) => {
+  try {
+    const queryParams: QueryDatabaseParameters = {
+      database_id: databaseId,
+      filter: {
+        and: [{ property: '日付', date: { before: '2024-02-03' } }],
+      },
+    };
+    const response = await client.databases.query(queryParams);
 
-  const response = await notion.databases.query(params);
-
-  return response;
+    return response;
+  } catch (error) {
+    console.error('NotionDBのクエリに失敗しました');
+    throw error;
+  }
 };
 
-export const updateNotionDB = async (params: UpdateDatabaseParameters) => {
-  const notion = new Client({ auth: process.env.NOTION_TOKEN });
+export const addItemToDB = async (
+  client: Client,
+  databaseId: string,
+  rowData: CreatePageParameters['properties']
+) => {
+  try {
+    const createParams: CreatePageParameters = {
+      parent: { database_id: databaseId },
+      properties: rowData,
+    };
+    const response = await client.pages.create(createParams);
 
-  const response = await notion.databases.update(params);
-
-  return response;
+    return response;
+  } catch (error) {
+    console.error('NotionDBの更新に失敗しました');
+    throw error;
+  }
 };
