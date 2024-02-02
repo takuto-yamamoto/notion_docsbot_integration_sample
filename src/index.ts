@@ -7,20 +7,22 @@ import { createInsertDataBasedOnQuery } from './notion/utils';
 
 const configPath = path.join(__dirname, '../config/config.json');
 const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-const notion = new Client({ auth: config.notion.apiToken });
+const { apiToken, sourceDBId, targetDBId } = config.notion;
 
 const main = async () => {
   try {
-    const queryResponse = await queryDB(notion, config.notion.sourceDBId);
+    const notion = new Client({ auth: apiToken });
 
-    const insertData = createInsertDataBasedOnQuery(queryResponse);
+    const queryResponse = await queryDB(notion, sourceDBId);
+    console.log('データのクエリが完了しました！');
+
+    const insertRows = createInsertDataBasedOnQuery(queryResponse);
     await Promise.all(
-      insertData.map((row) =>
-        addItemToDB(notion, config.notion.targetDBId, row)
-      )
+      insertRows.map((row) => addItemToDB(notion, targetDBId, row))
     );
+    console.log('データの追加が完了しました！');
   } catch (error) {
-    console.error('NotionDBの統合に失敗しました');
+    console.error('NotionDBのデータコピーに失敗しました');
     throw error;
   }
 };
